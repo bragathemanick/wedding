@@ -301,9 +301,112 @@ footer small { color: var(--ivory-shade); opacity: .8; letter-spacing: .1em; }
   .hero-inner > *, .thoranam .leaves, #mandala, .foil { animation: none; }
   #petals { display: none; }
 }
+
+/* ---------- Extra animations ---------- */
+/* Opening doors */
+#doors { position: fixed; inset: 0; z-index: 100; display: flex; pointer-events: none; }
+#doors .door {
+  flex: 1; position: relative;
+  background: radial-gradient(ellipse 120% 80% at 100% 50%, var(--velvet-mid), var(--velvet-deep));
+  animation: door-l 1.5s cubic-bezier(.7,0,.2,1) 1s forwards;
+}
+#doors .door::before { content: ""; position: absolute; inset: 0; background-image: var(--damask); background-size: 80px 80px; opacity: .12; }
+#doors .door.l { box-shadow: inset -2px 0 0 var(--gold), inset -10px 0 0 var(--velvet-deep), inset -11px 0 0 color-mix(in srgb, var(--gold) 60%, transparent); }
+#doors .door.r { transform-origin: right; animation-name: door-r; background: radial-gradient(ellipse 120% 80% at 0% 50%, var(--velvet-mid), var(--velvet-deep)); box-shadow: inset 2px 0 0 var(--gold), inset 10px 0 0 var(--velvet-deep), inset 11px 0 0 color-mix(in srgb, var(--gold) 60%, transparent); }
+#doors .seal {
+  position: absolute; left: 50%; top: 50%; width: 120px; height: 120px; margin: -60px 0 0 -60px; border-radius: 50%;
+  display: grid; place-items: center; z-index: 2;
+  background: radial-gradient(circle at 40% 35%, #f6e08e, #b8862f 70%);
+  box-shadow: 0 0 0 4px var(--velvet-deep), 0 0 0 5px var(--gold), 0 0 40px rgba(243, 220, 140, .45);
+  animation: seal 1s ease .6s forwards;
+}
+#doors .seal span { font-family: var(--font-script); font-size: 2.6rem; color: var(--velvet-deep); line-height: 1; }
+@keyframes door-l { to { transform: translateX(-102%); } }
+@keyframes door-r { to { transform: translateX(102%); } }
+@keyframes seal { 0% { transform: scale(1); } 40% { transform: scale(1.08); } 100% { transform: scale(.2); opacity: 0; } }
+
+/* Hero entrance follows the doors */
+.hero-inner > * { animation-delay: 1.5s; }
+.hero-inner > *:nth-child(2) { animation-delay: 1.6s; }
+.hero-inner > *:nth-child(3) { animation-delay: 1.7s; }
+.hero-inner > *:nth-child(4) { animation-delay: 2.9s; }
+.hero-inner > *:nth-child(5) { animation-delay: 3.05s; }
+.hero-inner > *:nth-child(n+6) { animation-delay: 3.2s; }
+/* Names written in, one after the other */
+.names .n { clip-path: inset(-30% 100% -30% -10%); animation: write 1.3s cubic-bezier(.5,0,.3,1) forwards, shimmer 9s linear infinite; }
+.names .n:first-child { animation-delay: 1.8s, 0s; }
+.names .n:last-child { animation-delay: 2.5s, 0s; }
+.names .amp { opacity: 0; animation: fade .8s ease 2.3s forwards; }
+@keyframes write { to { clip-path: inset(-30% -10% -30% -10%); } }
+@keyframes fade { to { opacity: 1; } }
+
+/* Twinkling gold sparkles */
+.sparkles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.sparkles i {
+  position: absolute; width: 10px; height: 10px; opacity: 0;
+  background: radial-gradient(circle, #fff6cf 0 18%, transparent 20%),
+              linear-gradient(0deg, transparent 45%, var(--gold-light) 50%, transparent 55%),
+              linear-gradient(90deg, transparent 45%, var(--gold-light) 50%, transparent 55%);
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+@keyframes twinkle { 0%, 100% { opacity: 0; transform: scale(.4) rotate(0); } 50% { opacity: .9; transform: scale(1.2) rotate(45deg); } }
+
+/* Countdown seconds pulse */
+.medal.pulse { animation: pulse .6s ease; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 1px var(--gold), 0 0 0 5px var(--velvet-deep), 0 0 0 6px color-mix(in srgb, var(--gold) 55%, transparent), 0 0 0 rgba(243,220,140,0); } 40% { box-shadow: 0 0 0 1px var(--gold-light), 0 0 0 5px var(--velvet-deep), 0 0 0 6px var(--gold), 0 0 26px rgba(243,220,140,.55); } }
+
+/* Floating kalasam crests */
+.event .crest, .family .crest { animation: float 4.5s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-5px); } }
+
+/* Gold shine across buttons */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%;
+  background: linear-gradient(100deg, transparent, rgba(255, 248, 220, .55), transparent);
+  transform: skewX(-20deg); transition: left .7s ease; pointer-events: none;
+}
+.btn:hover::after { left: 130%; }
+.hero .cta .btn:first-child::after { animation: shine 4s ease-in-out 3.5s infinite; }
+@keyframes shine { 0% { left: -60%; } 30%, 100% { left: 130%; } }
+
+/* Nav gains depth after scrolling */
+.nav { transition: box-shadow .4s, background .4s; }
+.nav.scrolled { box-shadow: 0 8px 24px rgba(20, 2, 6, .45); }
+.nav a.link { position: relative; }
+.nav a.link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 10px; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform .35s; }
+.nav a.link:hover::after, .nav a.link.active::after { transform: scaleX(1); }
+.nav a.link.active { color: var(--gold-light); }
+
+/* Scroll reveals */
+.will-reveal { opacity: 0; transform: translateY(42px); transition: opacity .9s ease, transform 1s cubic-bezier(.2,.7,.2,1); }
+.will-reveal.zoom { transform: translateY(30px) scale(.94); }
+.will-reveal.revealed { opacity: 1; transform: none; }
+.flourish { stroke-dasharray: 420; stroke-dashoffset: 0; }
+.will-reveal.revealed .flourish, .flourish.will-reveal.revealed { animation: draw 1.8s ease .2s both; }
+@keyframes draw { from { stroke-dashoffset: 420; } to { stroke-dashoffset: 0; } }
+.lotus.revealed { animation: bloom 1.4s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes bloom { from { transform: scale(.4) rotate(-20deg); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* Lift on hover */
+.event, .family { transition: opacity .9s ease, transform .6s cubic-bezier(.2,.7,.2,1), box-shadow .5s; }
+.event.revealed:hover, .event:not(.will-reveal):hover { transform: translateY(-10px); }
+.family.revealed:hover, .family:not(.will-reveal):hover { transform: translateY(-8px); }
+.chip span { transition: background .2s, color .2s, transform .2s; }
+.chip input:checked + span { animation: pop .35s ease; }
+@keyframes pop { 50% { transform: scale(1.08); } }
+
+@media (prefers-reduced-motion: reduce) {
+  #doors, .sparkles { display: none; }
+  .names .n { clip-path: none; animation: none; }
+  .names .amp { opacity: 1; animation: none; }
+  .will-reveal { opacity: 1; transform: none; transition: none; }
+  .event .crest, .family .crest, .btn::after, .medal.pulse, .flourish, .lotus { animation: none !important; }
+}
 </style>
 </head>
 <body>
+<div id="doors" aria-hidden="true"><div class="door l"></div><div class="seal"><span>A&amp;B</span></div><div class="door r"></div></div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
@@ -348,6 +451,7 @@ footer small { color: var(--ivory-shade); opacity: .8; letter-spacing: .1em; }
 
   <canvas id="mandala" width="820" height="820" aria-hidden="true"></canvas>
   <canvas id="petals" aria-hidden="true"></canvas>
+  <div class="sparkles" aria-hidden="true"></div>
   <div class="frame" aria-hidden="true">
     <svg class="tl"><use href="#corner"/></svg><svg class="tr"><use href="#corner"/></svg>
     <svg class="bl"><use href="#corner"/></svg><svg class="br"><use href="#corner"/></svg>
@@ -774,6 +878,72 @@ var SITE = {
     if (navigator.clipboard && navigator.clipboard.writeText) {
       navigator.clipboard.writeText(text).then(function () { btn.textContent = "Copied"; }, selectText);
     } else selectText();
+  });
+})();
+
+/* ===== Extra animations ===== */
+(function () {
+  var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var doors = document.getElementById("doors");
+  if (doors) setTimeout(function () { doors.hidden = true; }, 2700);
+  if (reduce) return;
+
+  // Sparkles scattered across the hero
+  var box = document.querySelector(".sparkles");
+  for (var i = 0; i < 26; i++) {
+    var sp = document.createElement("i");
+    sp.style.left = (4 + Math.random() * 92) + "%";
+    sp.style.top = (12 + Math.random() * 80) + "%";
+    var sz = 6 + Math.random() * 10;
+    sp.style.width = sp.style.height = sz + "px";
+    sp.style.animationDelay = (Math.random() * 4) + "s";
+    sp.style.animationDuration = (2.6 + Math.random() * 2.4) + "s";
+    box.appendChild(sp);
+  }
+
+  // Pulse the seconds medallion on every tick
+  var secs = document.getElementById("cd-secs");
+  if (secs && window.MutationObserver) {
+    var medal = secs.parentNode;
+    new MutationObserver(function () {
+      medal.classList.remove("pulse"); void medal.offsetWidth; medal.classList.add("pulse");
+    }).observe(secs, { childList: true, characterData: true, subtree: true });
+  }
+
+  // Nav shadow and active section
+  var nav = document.querySelector(".nav");
+  var links = Array.prototype.slice.call(document.querySelectorAll(".nav a.link"));
+  function onScroll() {
+    nav.classList.toggle("scrolled", window.scrollY > 40);
+    var current = "";
+    links.forEach(function (a) {
+      var sec = document.querySelector(a.getAttribute("href"));
+      if (sec && sec.getBoundingClientRect().top < window.innerHeight * .4) current = a.getAttribute("href");
+    });
+    links.forEach(function (a) { a.classList.toggle("active", a.getAttribute("href") === current); });
+  }
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  // Reveal sections as they scroll into view
+  if (!("IntersectionObserver" in window)) return;
+  var targets = document.querySelectorAll(
+    ".blessing > *, .sec-head, .event, .family, .rsvp-card, .contact, footer .wrap > *");
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        var t = e.target; t.classList.add("revealed"); io.unobserve(t);
+        setTimeout(function () { t.style.transitionDelay = ""; }, 1600);
+      }
+    });
+  }, { threshold: .1, rootMargin: "0px 0px -10px 0px" });
+  Array.prototype.forEach.call(targets, function (el) {
+    if (el.getBoundingClientRect().top < window.innerHeight) return;
+    el.classList.add("will-reveal");
+    if (el.matches(".event, .family, .rsvp-card")) el.classList.add("zoom");
+    var sibs = Array.prototype.filter.call(el.parentNode.children, function (c) { return c.matches(".event, .family, .blessing > *, footer .wrap > *"); });
+    var idx = sibs.indexOf(el);
+    if (idx > 0) el.style.transitionDelay = (idx * .15) + "s";
+    io.observe(el);
   });
 })();
 </script>
